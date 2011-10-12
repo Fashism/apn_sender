@@ -50,6 +50,9 @@ module APN
         opts.on('-H', '--host=H', "Host and Port on which Redis is listening") do |h|
           @options[:host] = h
         end
+        opts.on('-r', '--redis-config=R', 'Redis config file') do |r|
+          load r
+        end
       end
       
       # If no arguments, give help screen
