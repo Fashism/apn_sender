@@ -51,7 +51,7 @@ module APN
           @options[:host] = h
         end
         opts.on('-r', '--redis-config=R', 'Redis config file') do |r|
-          load r
+          @options[:redis_config] = File.expand_path(r)
         end
       end
       
@@ -70,6 +70,7 @@ module APN
     end
     
     def run(worker_name = nil)
+      load @options[:redis_config] if @options[:redis_config]
       Resque.redis = @options[:host] if @options[:host]
       
       logger = Logger.new(File.join(::RAILS_ROOT, 'log', 'apn_sender.log'))
