@@ -47,6 +47,9 @@ module APN
         opts.on('-d', '--delay=D', "Delay between rounds of work (seconds)") do |d|
           @options[:delay] = d
         end
+        opts.on('-H', '--host=H', "Host and Port on which Redis is listening") do |h|
+          @options[:host] = h
+        end
       end
       
       # If no arguments, give help screen
@@ -64,6 +67,8 @@ module APN
     end
     
     def run(worker_name = nil)
+      Resque.redis = @options[:host] if @options[:host]
+      
       logger = Logger.new(File.join(::RAILS_ROOT, 'log', 'apn_sender.log'))
       
       worker = APN::Sender.new(@options)
